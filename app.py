@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 # Ρύθμιση σελίδας
-st.set_config(page_title="Hasia Beans DPP", page_icon="🚜", layout="wide")
+st.set_page_config(page_title="Hasia Beans DPP", page_icon="🚜", layout="wide")
 
 # Custom CSS για επαγγελματικό Look
 st.markdown("""
