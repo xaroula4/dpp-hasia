@@ -22,41 +22,43 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- ΔΕΔΟΜΕΝΑ ΠΡΟΪΟΝΤΩΝ ---
+# --- ΔΕΔΟΜΕΝΑ ΠΡΟΪΟΝΤΩΝ (ΕΝΗΜΕΡΩΜΕΝΑ) ---
 products = {
-    "Φασόλια Γίγαντες": {
-        "id": "#OX-01-070",
-        "area": "Αγροτεμάχιο 'Λιβάδια'",
-        "date": "Σεπτέμβριος 2025",
-        "type": "Βιολογική",
-        "drone_date": "10 Ιουλίου 2025",
-        "drone_flights": "5 επιτυχείς",
-        "hum": "26%",
-        "temp": "29°C",
-        "lat": 39.95, "lon": 21.62
-    },
-    "Φακή Χασίων (Καρπερό)": {
+    "Φακή Χασίων": {
         "id": "#OX-01-066",
+        "origin": "Καρπερό, Γρεβενά",
         "area": "Αγροτεμάχιο 'Κάμπος'",
         "date": "Ιούλιος 2025",
-        "type": "Συμβατική (Μειωμένες Εισροές)",
+        "type": "Βιολογική",
         "drone_date": "05 Ιουνίου 2025",
         "drone_flights": "3 επιτυχείς",
         "hum": "22%",
         "temp": "31°C",
-        "lat": 39.94, "lon": 21.63
+        "lat": 39.941, "lon": 21.632
+    },
+    "Φασόλια Γίγαντες": {
+        "id": "#OX-01-070",
+        "origin": "Καστοριά",
+        "area": "Αγροτεμάχιο 'Παραλίμνιο'",
+        "date": "Σεπτέμβριος 2025",
+        "type": "Συμβατική",
+        "drone_date": "12 Ιουλίου 2025",
+        "drone_flights": "6 επιτυχείς",
+        "hum": "28%",
+        "temp": "27°C",
+        "lat": 40.512, "lon": 21.261
     }
 }
 
 # 1. Header
 st.markdown('<div class="header-style"><h2>🌱 Ψηφιακό Διαβατήριο</h2><p style="margin:0;">Όσπρια Χασίων | Hasia Beans</p></div>', unsafe_allow_html=True)
 
-# 2. Επιλογή Προϊόντος (Dropdown)
+# 2. Επιλογή Προϊόντος
 selected_prod = st.selectbox("Επιλέξτε Προϊόν:", list(products.keys()))
 p = products[selected_prod]
 
 # Quick Info
-st.markdown(f"📍 **Καρπερό, Γρεβενά** | 📦 **{selected_prod}**")
+st.markdown(f"📍 **{p['origin']}** | 📦 **{selected_prod}**")
 st.info(f"🆔 Διαβατήριο: {p['id']}")
 
 # 3. Πληροφορίες Παρτίδας
@@ -76,7 +78,7 @@ st.markdown('<div class="section-header">🚁 Ψεκασμός με Drone (UAV)<
 st.markdown(f"""
 <div class="info-card" style="border-left: 5px solid #81c784;">
     <p style="margin:2px;">• <b>Τελευταίος Ψεκασμός:</b> {p['drone_date']}</p>
-    <p style="margin:2px;">• <b>Σκεύασμα:</b> Βιολογικό / Οικολογικό</p>
+    <p style="margin:2px;">• <b>Σκεύασμα:</b> Οικολογικό / Εγκεκριμένο</p>
     <p style="margin:2px;">• <b>Αρ. Πτήσεων:</b> {p['drone_flights']}</p>
 </div>
 """, unsafe_allow_html=True)
@@ -88,7 +90,7 @@ st.markdown(f"""
     <div class="stat-card">
         <span class="stat-icon">🌱</span>
         <span class="stat-label">Φάση</span>
-        <span class="stat-value">Ανάπτυξη</span>
+        <span class="stat-value">Ωρίμανση</span>
     </div>
     <div class="stat-card">
         <span class="stat-icon">💧</span>
@@ -103,7 +105,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# 6. Χάρτης (Ενημερώνεται βάσει προϊόντος)
+# 6. Χάρτης
 st.markdown('<div class="section-header">🗺️ Χάρτης Καλλιέργειας</div>', unsafe_allow_html=True)
 map_data = pd.DataFrame({'lat': [p['lat']], 'lon': [p['lon']]})
 st.map(map_data)
