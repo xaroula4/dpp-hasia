@@ -5,80 +5,107 @@ import numpy as np
 # Ρύθμιση Σελίδας
 st.set_page_config(page_title="Hasia Beans DPP", page_icon="🌱", layout="wide")
 
-# CSS ΓΙΑ ΤΟ ΣΩΣΤΟ LAYOUT ΧΩΡΙΣ ΚΑΘΕΤΑ ΓΡΑΜΜΑΤΑ
+# CSS ΓΙΑ MOBILE LOOK & ΣΤΑΘΕΡΟ LAYOUT
 st.markdown("""
     <style>
     .main { background-color: #f8f9f5; }
     .stApp { max-width: 500px; margin: 0 auto; background: white; padding: 10px; border-radius: 20px; }
-    
     .header-style { background-color: #2e7d32; color: white; padding: 20px; border-radius: 20px; text-align: center; margin-bottom: 15px; }
     .section-header { background-color: #1b5e20; color: white; padding: 8px 15px; border-radius: 10px; margin-top: 15px; font-weight: bold; }
     .info-card { background-color: #ffffff; padding: 12px; border-radius: 10px; border: 1px solid #eee; margin-top: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    
-    /* ΔΙΟΡΘΩΣΗ ΓΙΑ ΤΙΣ ΚΑΡΤΕΣ ΑΝΑΠΤΥΞΗΣ */
     .stats-container { display: flex; justify-content: space-around; gap: 5px; margin-top: 10px; }
     .stat-card { background: white; border: 1px solid #e0e0e0; border-radius: 12px; padding: 10px; text-align: center; flex: 1; min-width: 90px; }
     .stat-icon { font-size: 20px; display: block; margin-bottom: 5px; }
     .stat-label { font-size: 11px; color: #666; display: block; }
     .stat-value { font-size: 13px; font-weight: bold; color: #1b5e20; display: block; }
-
-    .stButton>button { background-color: #2e7d32; color: white; border-radius: 20px; width: 100%; font-weight: bold; border: none; height: 45px; }
+    .stButton>button { background-color: #2e7d32; color: white; border-radius: 20px; width: 100%; font-weight: bold; height: 45px; }
     </style>
     """, unsafe_allow_html=True)
+
+# --- ΔΕΔΟΜΕΝΑ ΠΡΟΪΟΝΤΩΝ ---
+products = {
+    "Φασόλια Γίγαντες": {
+        "id": "#OX-01-070",
+        "area": "Αγροτεμάχιο 'Λιβάδια'",
+        "date": "Σεπτέμβριος 2025",
+        "type": "Βιολογική",
+        "drone_date": "10 Ιουλίου 2025",
+        "drone_flights": "5 επιτυχείς",
+        "hum": "26%",
+        "temp": "29°C",
+        "lat": 39.95, "lon": 21.62
+    },
+    "Φακή Χασίων (Καρπερό)": {
+        "id": "#OX-01-066",
+        "area": "Αγροτεμάχιο 'Κάμπος'",
+        "date": "Ιούλιος 2025",
+        "type": "Συμβατική (Μειωμένες Εισροές)",
+        "drone_date": "05 Ιουνίου 2025",
+        "drone_flights": "3 επιτυχείς",
+        "hum": "22%",
+        "temp": "31°C",
+        "lat": 39.94, "lon": 21.63
+    }
+}
 
 # 1. Header
 st.markdown('<div class="header-style"><h2>🌱 Ψηφιακό Διαβατήριο</h2><p style="margin:0;">Όσπρια Χασίων | Hasia Beans</p></div>', unsafe_allow_html=True)
 
-# 2. Τοποθεσία & ID
-st.markdown("📍 **Καρπερό, Χάσια** | 📦 **Φασόλια Γίγαντες**")
-st.info("🆔 Διαβατήριο: #OX-01-070")
+# 2. Επιλογή Προϊόντος (Dropdown)
+selected_prod = st.selectbox("Επιλέξτε Προϊόν:", list(products.keys()))
+p = products[selected_prod]
+
+# Quick Info
+st.markdown(f"📍 **Καρπερό, Γρεβενά** | 📦 **{selected_prod}**")
+st.info(f"🆔 Διαβατήριο: {p['id']}")
 
 # 3. Πληροφορίες Παρτίδας
 st.markdown('<div class="section-header">📋 Πληροφορίες Παρτίδας</div>', unsafe_allow_html=True)
-st.markdown("""
+st.markdown(f"""
 <div class="info-card">
-    <p style="margin:2px;">• <b>Αρ. Παρτίδας:</b> OX-01-070</p>
+    <p style="margin:2px;">• <b>Αρ. Παρτίδας:</b> {p['id']}</p>
     <p style="margin:2px;">• <b>Έκταση:</b> 250 στρέμματα</p>
-    <p style="margin:2px;">• <b>Συγκομιδή:</b> Σεπτέμβριος 2025</p>
-    <p style="margin:2px;">• <b>Καλλιέργεια:</b> Βιολογική</p>
+    <p style="margin:2px;">• <b>Συγκομιδή:</b> {p['date']}</p>
+    <p style="margin:2px;">• <b>Τοποθεσία:</b> {p['area']}</p>
+    <p style="margin:2px;">• <b>Καλλιέργεια:</b> {p['type']}</p>
 </div>
 """, unsafe_allow_html=True)
 
 # 4. Ψεκασμός με Drone
 st.markdown('<div class="section-header">🚁 Ψεκασμός με Drone (UAV)</div>', unsafe_allow_html=True)
-st.markdown("""
+st.markdown(f"""
 <div class="info-card" style="border-left: 5px solid #81c784;">
-    <p style="margin:2px;">• <b>Τελευταίος Ψεκασμός:</b> 10 Ιουλίου 2025</p>
-    <p style="margin:2px;">• <b>Σκεύασμα:</b> Βιολογικό Εντομοκτόνο</p>
-    <p style="margin:2px;">• <b>Αρ. Πτήσεων:</b> 5 επιτυχείς</p>
+    <p style="margin:2px;">• <b>Τελευταίος Ψεκασμός:</b> {p['drone_date']}</p>
+    <p style="margin:2px;">• <b>Σκεύασμα:</b> Βιολογικό / Οικολογικό</p>
+    <p style="margin:2px;">• <b>Αρ. Πτήσεων:</b> {p['drone_flights']}</p>
 </div>
 """, unsafe_allow_html=True)
 
-# 5. Ανάπτυξη Καλλιέργειας - Η ΔΙΟΡΘΩΣΗ ΕΔΩ
+# 5. Ανάπτυξη Καλλιέργειας
 st.markdown('<div class="section-header">🌡️ Ανάπτυξη Καλλιέργειας</div>', unsafe_allow_html=True)
-st.markdown("""
+st.markdown(f"""
 <div class="stats-container">
     <div class="stat-card">
         <span class="stat-icon">🌱</span>
         <span class="stat-label">Φάση</span>
-        <span class="stat-value">Σπορά</span>
+        <span class="stat-value">Ανάπτυξη</span>
     </div>
     <div class="stat-card">
         <span class="stat-icon">💧</span>
         <span class="stat-label">Υγρασία</span>
-        <span class="stat-value">26%</span>
+        <span class="stat-value">{p['hum']}</span>
     </div>
     <div class="stat-card">
         <span class="stat-icon">☀️</span>
         <span class="stat-label">Θερμ.</span>
-        <span class="stat-value">29°C</span>
+        <span class="stat-value">{p['temp']}</span>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# 6. Χάρτης
-st.markdown('<div class="section-header">🗺️ Χάρτης Καλλιέργειας (250 στρ.)</div>', unsafe_allow_html=True)
-map_data = pd.DataFrame(np.random.randn(1, 2) / [300, 300] + [39.95, 21.62], columns=['lat', 'lon'])
+# 6. Χάρτης (Ενημερώνεται βάσει προϊόντος)
+st.markdown('<div class="section-header">🗺️ Χάρτης Καλλιέργειας</div>', unsafe_allow_html=True)
+map_data = pd.DataFrame({'lat': [p['lat']], 'lon': [p['lon']]})
 st.map(map_data)
 
 # 7. Calculator
