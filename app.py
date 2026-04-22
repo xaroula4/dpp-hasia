@@ -6,113 +6,108 @@ import os
 # Ρύθμιση Σελίδας
 st.set_page_config(page_title="OSPRIA HASION DPP", page_icon="🌱", layout="wide")
 
-# CSS ΓΙΑ ΤΟ ΤΕΛΙΚΟ LOOK
+# CSS ΓΙΑ COMPACT MOBILE LOOK
 st.markdown("""
     <style>
     .main { background-color: #f8f9f5; }
-    .stApp { max-width: 500px; margin: 0 auto; background: white; padding: 10px; border-radius: 20px; box-shadow: 0px 0px 20px rgba(0,0,0,0.1); }
-    .header-style { background-color: #2e7d32; color: white; padding: 20px; border-radius: 20px; text-align: center; margin-bottom: 15px; }
-    .section-header { background-color: #1b5e20; color: white; padding: 8px 15px; border-radius: 10px; margin-top: 15px; font-weight: bold; font-size: 14px; }
-    .info-card { background-color: #ffffff; padding: 12px; border-radius: 10px; border: 1px solid #eee; margin-top: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    .eco-badge { background-color: #e1f5fe; padding: 10px; border-radius: 10px; border: 1px solid #01579b; color: #01579b; font-size: 12px; font-weight: bold; text-align: center; margin: 10px 0; }
-    .stat-card { background: #f1f8e9; border: 1px solid #e0e0e0; border-radius: 12px; padding: 10px; text-align: center; flex: 1; }
-    .stButton>button { background-color: #2e7d32 !important; color: white !important; border-radius: 20px; width: 100%; font-weight: bold; border: none; height: 45px; }
-    .bio-text { font-size: 10px; text-align: center; font-weight: bold; color: #333; margin-top: -10px; }
+    .stApp { max-width: 450px; margin: 0 auto; background: white; padding: 5px; border-radius: 15px; }
+    
+    /* Header - Πιο μαζεμένο */
+    .header-style { background-color: #2e7d32; color: white; padding: 12px; border-radius: 15px; text-align: center; margin-bottom: 10px; }
+    .header-style h2 { font-size: 20px; margin: 0; }
+    .header-style p { font-size: 12px; margin: 0; opacity: 0.9; }
+
+    /* Ενότητες - Λιγότερο padding */
+    .section-header { background-color: #1b5e20; color: white; padding: 5px 12px; border-radius: 8px; margin-top: 10px; font-weight: bold; font-size: 13px; }
+    .info-card { background-color: #ffffff; padding: 8px; border-radius: 8px; border: 1px solid #eee; margin-top: 5px; font-size: 12px; }
+    
+    /* Stats - Μικρότερα Cards */
+    .stats-container { display: flex; justify-content: space-around; gap: 4px; margin-top: 8px; }
+    .stat-card { background: #f9fbf7; border: 1px solid #e0e0e0; border-radius: 10px; padding: 6px; text-align: center; flex: 1; }
+    .stat-card b { font-size: 13px; color: #2e7d32; }
+    .stat-card small { font-size: 10px; color: #666; }
+
+    /* Eco Badge */
+    .eco-badge { background-color: #e1f5fe; padding: 6px; border-radius: 8px; border: 1px solid #01579b; color: #01579b; font-size: 11px; text-align: center; margin: 8px 0; }
+    
+    .stButton>button { background-color: #2e7d32 !important; color: white !important; border-radius: 15px; height: 38px; font-size: 14px; border: none; }
+    .bio-text { font-size: 9px; text-align: center; font-weight: bold; color: #333; margin-top: -8px; }
     </style>
     """, unsafe_allow_html=True)
 
-# --- ΔΕΔΟΜΕΝΑ ΠΡΟΪΟΝΤΩΝ ---
+# --- ΔΕΔΟΜΕΝΑ ---
 products = {
-    "Φακή Χασίων (Παρτίδα #OX-01)": {
-        "producer": "Νικόλαος Παπαδόπουλος",
-        "id": "#OX-01-066", "origin": "Καρπερό, Γρεβενά", "type": "Βιολογική",
-        "date": "Ιούλιος 2025", "phase": "Ανάπτυξη", "health": "96%", 
+    "Φακή Χασίων (#OX-01)": {
+        "producer": "Ν. Παπαδόπουλος", "id": "#OX-01-066", "type": "Βιολογική",
+        "phase": "Ανάπτυξη", "health": "96%", "temp": "28°C",
         "img": "fakes.JPEG", "bio_img": "bio.png", "show_bio": True,
-        "drone_date": "05 Ιουνίου 2025", "drone_flights": "3 επιτυχείς",
-        "video": "https://www.youtube.com/watch?v=m0md-5Wzp1E",
-        "recipe": "🍲 <b>Σαλάτα Beluga:</b> Βράστε για 20', προσθέστε φρέσκο κρεμμυδάκι, ντοματίνια και βαλσάμικο.",
-        "eco_win": "💧 1.200L Νερό εξοικονομήθηκε",
-        "lat": 39.941, "lon": 21.632
+        "drone_flights": "3 πτήσεις", "video": "https://www.youtube.com/watch?v=m0md-5Wzp1E",
+        "recipe": "🍲 <b>Beluga:</b> Βράστε 20', προσθέστε κρεμμυδάκι & βαλσάμικο.",
+        "eco": "💧 -1.200L Νερό", "lat": 39.941, "lon": 21.632
     },
-    "Φασόλια Γίγαντες (Παρτίδα #KT-05)": {
-        "producer": "Δημήτριος Γεωργίου",
-        "id": "#KT-05-070", "origin": "Καστοριά", "type": "Συμβατική",
-        "date": "Σεπτέμβριος 2025", "phase": "Ωρίμανση", "health": "98%", 
+    "Φασόλια Γίγαντες (#KT-05)": {
+        "producer": "Δ. Γεωργίου", "id": "#KT-05-070", "type": "Συμβατική",
+        "phase": "Ωρίμανση", "health": "98%", "temp": "27°C",
         "img": "gigantes.png", "bio_img": "bio.png", "show_bio": False,
-        "drone_date": "12 Ιουλίου 2025", "drone_flights": "6 επιτυχείς",
-        "video": "https://www.youtube.com/watch?v=SKGdu1x0sxo",
-        "recipe": "🥘 <b>Γίγαντες στο φούρνο:</b> Με φρέσκια ντομάτα, σέλινο και πολύ μεράκι!",
-        "eco_win": "🚜 -35% Λιγότερα Καύσιμα (CO2)",
-        "lat": 40.512, "lon": 21.261
+        "drone_flights": "6 πτήσεις", "video": "https://www.youtube.com/watch?v=SKGdu1x0sxo",
+        "recipe": "🥘 <b>Φούρνου:</b> Με ντομάτα, σέλινο και μεράκι!",
+        "eco": "🚜 -35% CO2", "lat": 40.512, "lon": 21.261
     }
 }
 
 # 1. Header
-st.markdown('<div class="header-style"><h2>🌱 Ψηφιακό Διαβατήριο</h2><p style="margin:0; font-weight: bold;">ΟΣΠΡΙΑ ΧΑΣΙΩΝ / OSPRIA HASION</p></div>', unsafe_allow_html=True)
+st.markdown('<div class="header-style"><h2>🌱 Ψηφιακό Διαβατήριο</h2><p>ΟΣΠΡΙΑ ΧΑΣΙΩΝ / OSPRIA HASION</p></div>', unsafe_allow_html=True)
 
-# 2. Επιλογή Παρτίδας
-selected_prod = st.selectbox("Σκανάρετε ή Επιλέξτε Παρτίδα:", list(products.keys()))
+# 2. Selection
+selected_prod = st.selectbox("Επιλογή Παρτίδας:", list(products.keys()), label_visibility="collapsed")
 p = products[selected_prod]
 
-# 3. Εικόνες & Σήμα Bio
-col1, col2 = st.columns([3, 1.2])
+# 3. Images & Bio Tag
+col1, col2 = st.columns([3, 1])
 with col1:
     if os.path.exists(p['img']): st.image(p['img'], use_container_width=True)
-    else: st.info(f"Φορτώνει: {p['img']}")
 with col2:
     if p['show_bio'] and os.path.exists(p['bio_img']):
         st.image(p['bio_img'], use_container_width=True)
-        st.markdown('<p class="bio-text">HELLAS Agriculture<br>GR-BIO-007</p>', unsafe_allow_html=True)
+        st.markdown('<p class="bio-text">HELLAS Ag.<br>GR-BIO-007</p>', unsafe_allow_html=True)
 
-# 4. Eco Impact Badge
-st.markdown(f'<div class="eco-badge">🌍 ΠΕΡΙΒΑΛΛΟΝΤΙΚΟ ΟΦΕΛΟΣ: {p["eco_win"]}</div>', unsafe_allow_html=True)
+# 4. Eco & Info
+st.markdown(f'<div class="eco-badge">🌍 Eco-Benefit: {p["eco"]}</div>', unsafe_allow_html=True)
 
-# 5. Στοιχεία Παραγωγού & Πιστοποίηση
-st.markdown('<div class="section-header">👨‍🌾 Στοιχεία Παραγωγού & Batch ID</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-header">📋 Στοιχεία Παρτίδας</div>', unsafe_allow_html=True)
 st.markdown(f"""
 <div class="info-card">
-    <p style="margin:2px;">• <b>Παραγωγός:</b> {p['producer']}</p>
-    <p style="margin:2px;">• <b>Lot ID:</b> {p['id']}</p>
-    <p style="margin:2px;">• <b>Πιστοποίηση:</b> ISO 22000:2018</p>
+    • <b>Παραγωγός:</b> {p['producer']} | <b>Lot:</b> {p['id']}<br>
+    • <b>Τύπος:</b> {p['type']} | <b>ISO 22000:2018</b>
 </div>
 """, unsafe_allow_html=True)
 
-# 6. Βίντεο Drone
-st.markdown('<div class="section-header">🚁 Drone Spraying (Real Footage)</div>', unsafe_allow_html=True)
+# 5. Drone Video
+st.markdown('<div class="section-header">🚁 Drone Footage (UAV)</div>', unsafe_allow_html=True)
 st.video(p['video'])
 
-# 7. Live Stats
-st.markdown('<div class="section-header">🌡️ Live Κατάσταση (UAV Data)</div>', unsafe_allow_html=True)
+# 6. Stats - Compact
 st.markdown(f"""
 <div class="stats-container">
-    <div class="stat-card">❤️<br><small>Υγεία</small><br><b>{p['health']}</b></div>
-    <div class="stat-card">🌿<br><small>Στάδιο</small><br><b>{p['phase']}</b></div>
-    <div class="stat-card">☀️<br><small>Temp</small><br><b>28°C</b></div>
+    <div class="stat-card"><small>Υγεία</small><br><b>{p['health']}</b></div>
+    <div class="stat-card"><small>Στάδιο</small><br><b>{p['phase']}</b></div>
+    <div class="stat-card"><small>Πτήσεις</small><br><b>{p['drone_flights']}</b></div>
 </div>
 """, unsafe_allow_html=True)
 
-# 8. Συνταγή
+# 7. Recipe & Story
 st.markdown('<div class="section-header">👩‍🍳 Πρόταση Μαγειρικής</div>', unsafe_allow_html=True)
-st.markdown(f'<div class="recipe-card">{p["recipe"]}</div>', unsafe_allow_html=True)
+st.markdown(f'<div class="info-card">{p["recipe"]}</div>', unsafe_allow_html=True)
 
-# 9. Storytelling
 st.markdown('<div class="section-header">🏠 Η Ιστορία μας</div>', unsafe_allow_html=True)
-st.markdown('<div class="info-card"><b>ΟΣΠΡΙΑ ΧΑΣΙΩΝ (Καρπερό Γρεβενών)</b><br>Από το 2015, συνδυάζουμε το μεράκι της οικογένειας με την τεχνολογία αιχμής των drones για ένα καθαρό περιβάλλον.</div>', unsafe_allow_html=True)
+st.markdown('<div class="info-card"><b>ΟΣΠΡΙΑ ΧΑΣΙΩΝ (Καρπερό)</b>: Παραγωγή 250 στρ. με τεχνολογία Drone για μηδενικό αποτύπωμα.</div>', unsafe_allow_html=True)
 
-# 10. Χάρτης
-st.markdown('<div class="section-header">🗺️ Τοποθεσία Αγροτεμαχίου</div>', unsafe_allow_html=True)
-map_data = pd.DataFrame({'lat': [p['lat']], 'lon': [p['lon']]})
-st.map(map_data)
+# 8. Map & Interaction
+st.markdown('<div class="section-header">🗺️ Τοποθεσία</div>', unsafe_allow_html=True)
+st.map(pd.DataFrame({'lat': [p['lat']], 'lon': [p['lon']]}), zoom=12)
 
-# 11. Interactive Footer
-st.markdown("---")
-col_bt1, col_bt2 = st.columns(2)
-with col_bt1:
-    if st.button("📱 QR Code"):
-        st.image("https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://hasia-beans.streamlit.app", caption="Scan for DPP Demo")
-with col_bt2:
-    if st.button("⭐ Ξενάγηση"):
-        st.balloons()
-        st.success("Registration Success!")
+st.markdown("<br>", unsafe_allow_html=True)
+if st.button("⭐ Κλείστε Ξενάγηση"):
+    st.balloons()
 
-st.markdown("<p style='text-align:center; font-size:11px; color:#999;'>ΟΣΠΡΙΑ ΧΑΣΙΩΝ DPP v8.0 | Final Thesis Version</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center; font-size:9px; color:#999;'>OSPRIA HASION DPP v9.0</p>", unsafe_allow_html=True)
