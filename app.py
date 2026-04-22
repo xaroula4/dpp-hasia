@@ -29,7 +29,7 @@ st.markdown("""
     .journey-date { font-size: 9px; color: #666; display: block; margin-top: 2px; }
     .journey-arrow { color: #2e7d32; font-weight: bold; font-size: 18px; margin-bottom: 20px; }
 
-    .stats-container { display: flex; justify-content: space-between; gap: 8px; margin-top: 10px; }
+    .stats-container { display: flex; justify-content: space-around; gap: 8px; margin-top: 10px; }
     .stat-card { background: #f1f8e9; border: 1px solid #e0e0e0; border-radius: 12px; padding: 12px 5px; text-align: center; flex: 1; }
     .stat-card span { font-size: 20px; display: block; margin-bottom: 5px; }
     .stat-card small { font-size: 11px; color: #666; font-weight: bold; display: block; }
@@ -37,6 +37,8 @@ st.markdown("""
 
     .stButton>button { background-color: #2e7d32 !important; color: white !important; border-radius: 20px; width: 100%; font-weight: bold; height: 48px; border: none; }
     .bio-text { font-size: 10px; text-align: center; font-weight: bold; color: #333; margin-top: -10px; }
+    
+    .about-section { background-color: #f1f8e9; padding: 15px; border-radius: 15px; border-left: 5px solid #2e7d32; margin-top: 10px; font-size: 14px; line-height: 1.6; }
     </style>
     """, unsafe_allow_html=True)
 
@@ -124,29 +126,39 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# 8. Συνταγή & Ιστορία
+# 8. Συνταγή
 st.markdown('<div class="section-header">👩‍🍳 Πρόταση Μαγειρικής</div>', unsafe_allow_html=True)
-st.markdown(f'<div class="info-card">{p["recipe"]}</div>', unsafe_allow_html=True)
+st.markdown(f'<div class="recipe-card">{p["recipe"]}</div>', unsafe_allow_html=True)
 
+# 9. Ενισχυμένο Storytelling
 st.markdown('<div class="section-header">🏠 Η Ιστορία μας</div>', unsafe_allow_html=True)
-st.markdown('<div class="info-card"><b>ΟΣΠΡΙΑ ΧΑΣΙΩΝ</b>: Καλλιέργεια 250 στρ. με σεβασμό στη γη και τεχνολογία Drone.</div>', unsafe_allow_html=True)
+st.markdown("""
+<div class="about-section">
+    <b>ΟΣΠΡΙΑ ΧΑΣΙΩΝ (Καρπερό Γρεβενών)</b><br>
+    Από το 2015, η οικογένειά μας καλλιεργεί με μεράκι 250 στρέμματα στην εύφορη γη των Χασίων. 
+    Συνδυάζουμε την <b>παράδοση</b> των παππούδων μας με την <b>τεχνολογία αιχμής των drones</b>. 
+    Με τη χρήση UAV επιτυγχάνουμε στοχευμένη φροντίδα, προστατεύοντας τον υδροφόρο ορίζοντα και 
+    προσφέροντας προϊόντα με μηδενικό περιβαλλοντικό αποτύπωμα, από το δικό μας αγρόκτημα στο δικό σας πιάτο.
+</div>
+""", unsafe_allow_html=True)
 
-# 9. Χάρτης
+# 10. Χάρτης
 st.markdown('<div class="section-header">🗺️ Τοποθεσία Αγροτεμαχίου</div>', unsafe_allow_html=True)
 map_data = pd.DataFrame({'lat': [p['lat']], 'lon': [p['lon']]})
 st.map(map_data)
 
-# 10. QR CODE (New Stable Source)
+# 11. QR CODE
 st.markdown('<div class="section-header">📲 Scan for Origin</div>', unsafe_allow_html=True)
-# Σταθερό API παραγωγής QR
-qr_code_api = f"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://hasia-beans.streamlit.app&bgcolor=ffffff"
+qr_code_api = f"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://hasia-beans.streamlit.app"
 col_qr, col_txt = st.columns([1, 2])
 with col_qr:
     st.image(qr_code_api, caption="Batch QR", width=120)
 with col_txt:
     st.markdown("<p style='font-size:12px; margin-top:10px;'>Σκανάρετε το QR Code για να επαληθεύσετε την αυθεντικότητα της παρτίδας και την ιχνηλασιμότητα του προϊόντος.</p>", unsafe_allow_html=True)
 
-if st.button("⭐ Κλείστε Ξενάγηση στο Κτήμα"):
+# 12. Αγρόκτημα Button
+if st.button("⭐ Κλείστε Ξενάγηση στο Αγρόκτημα"):
     st.balloons()
+    st.success("Η αίτηση εστάλη! Σας περιμένουμε στα Χάσια.")
 
-st.markdown("<p style='text-align:center; font-size:10px; color:#999; margin-top:15px;'>ΟΣΠΡΙΑ ΧΑΣΙΩΝ DPP v14.1</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center; font-size:10px; color:#999; margin-top:15px;'>ΟΣΠΡΙΑ ΧΑΣΙΩΝ DPP v14.5</p>", unsafe_allow_html=True)
