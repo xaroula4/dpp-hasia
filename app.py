@@ -38,7 +38,7 @@ products = {
         "id": "#OX-01-070", "origin": "Καστοριά", "type": "Συμβατική",
         "date": "Σεπτέμβριος 2025", "phase": "Ωρίμανση", "health": "98%", 
         "img": "gigantes.png", "bio_img": "bio.png", "show_bio": False,
-        "drone_date": "12 Ιουλίου 2025", "drone_flights": "6 επιτυχείς", "drone_tool": "Εγκεκριμένο Σκεύασμα",
+        "drone_date": "12 Ιουλίου 2025", "drone_flights": "6 επιτυχείς", "drone_tool": "Διαφυλλικό Λίπασμα",
         "video": "https://www.youtube.com/watch?v=SKGdu1x0sxo",
         "recipe": "🥘 <b>Γίγαντες στο φούρνο:</b> Με φρέσκια ντομάτα, σέλινο και πολύ μεράκι!",
         "lat": 40.512, "lon": 21.261
