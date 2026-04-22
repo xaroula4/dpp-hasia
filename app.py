@@ -4,7 +4,7 @@ import numpy as np
 import os
 
 # Ρύθμιση Σελίδας
-st.set_page_config(page_title="Hasia Beans DPP", page_icon="🌱", layout="wide")
+st.set_page_config(page_title="Hasia Hasion DPP", page_icon="🌱", layout="wide")
 
 # CSS ΓΙΑ ΤΟ ΤΕΛΙΚΟ MOBILE LOOK
 st.markdown("""
