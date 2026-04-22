@@ -19,17 +19,16 @@ st.markdown("""
     .section-header { background-color: #1b5e20; color: white; padding: 8px 15px; border-radius: 10px; margin-top: 15px; font-weight: bold; font-size: 15px; display: flex; align-items: center; gap: 8px; }
     .info-card { background-color: #ffffff; padding: 12px; border-radius: 10px; border: 1px solid #eee; margin-top: 5px; font-size: 14px; line-height: 1.6; }
     
-    /* Eco Box */
     .eco-box { background-color: #e1f5fe; padding: 12px; border-radius: 12px; border: 1px solid #01579b; color: #01579b; font-size: 13px; text-align: center; margin: 10px 0; font-weight: bold; }
 
-    /* ΝΕΑ ΟΡΙΖΟΝΤΙΑ ΔΙΑΔΡΟΜΗ ΠΡΟΪΟΝΤΟΣ */
+    /* ΟΡΙΖΟΝΤΙΑ ΔΙΑΔΡΟΜΗ ΜΕ ΗΜΕΡΟΜΗΝΙΕΣ */
     .journey-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 5px; background: #f1f8e9; border-radius: 15px; margin-top: 10px; }
     .journey-item { text-align: center; flex: 1; }
     .journey-icon { font-size: 22px; display: block; }
-    .journey-label { font-size: 10px; font-weight: bold; color: #1b5e20; margin-top: 5px; }
-    .journey-arrow { color: #2e7d32; font-weight: bold; font-size: 18px; }
+    .journey-label { font-size: 10px; font-weight: bold; color: #1b5e20; margin-top: 5px; text-transform: uppercase; }
+    .journey-date { font-size: 9px; color: #666; display: block; margin-top: 2px; }
+    .journey-arrow { color: #2e7d32; font-weight: bold; font-size: 18px; margin-bottom: 20px; }
 
-    /* Stats Container (Δίπλα-δίπλα) */
     .stats-container { display: flex; justify-content: space-between; gap: 8px; margin-top: 10px; }
     .stat-card { background: #f1f8e9; border: 1px solid #e0e0e0; border-radius: 12px; padding: 12px 5px; text-align: center; flex: 1; }
     .stat-card span { font-size: 20px; display: block; margin-bottom: 5px; }
@@ -46,7 +45,8 @@ products = {
     "Φακή Χασίων (Παρτίδα #OX-01)": {
         "producer": "Νικόλαος Παπαδόπουλος", "id": "#OX-01-066", "origin": "Καρπερό, Γρεβενά", "type": "Βιολογική",
         "phase": "Ανάπτυξη", "health": "96%", "temp": "28°C", "img": "fakes.JPEG", "bio_img": "bio.png", "show_bio": True,
-        "drone_date": "05 Ιουνίου 2025", "drone_flights": "3 επιτυχείς",
+        "plant_date": "15/04/2025", "drone_date": "05/06/2025", "harvest_date": "20/07/2025",
+        "drone_flights": "3 επιτυχείς",
         "eco": "💧 Μείωση νερού 40% μέσω UAV Precision Agriculture.",
         "video": "https://www.youtube.com/watch?v=m0md-5Wzp1E",
         "recipe": "🍲 <b>Σαλάτα Beluga:</b> Βράστε για 20', προσθέστε φρέσκο κρεμμυδάκι & βαλσάμικο.",
@@ -55,7 +55,8 @@ products = {
     "Φασόλια Γίγαντες (Παρτίδα #KT-05)": {
         "producer": "Δημήτριος Γεωργίου", "id": "#KT-05-070", "origin": "Καστοριά", "type": "Συμβατική",
         "phase": "Ωρίμανση", "health": "98%", "temp": "27°C", "img": "gigantes.png", "bio_img": "bio.png", "show_bio": False,
-        "drone_date": "12 Ιουλίου 2025", "drone_flights": "6 επιτυχείς",
+        "plant_date": "10/05/2025", "drone_date": "12/07/2025", "harvest_date": "15/09/2025",
+        "drone_flights": "6 επιτυχείς",
         "eco": "🚜 Μείωση CO2 κατά 35% λόγω στοχευμένου ψεκασμού.",
         "video": "https://www.youtube.com/watch?v=SKGdu1x0sxo",
         "recipe": "🥘 <b>Γίγαντες στο φούρνο:</b> Με φρέσκια ντομάτα, σέλινο και πολύ μεράκι!",
@@ -66,7 +67,7 @@ products = {
 # 1. Header
 st.markdown('<div class="header-style"><h2>🌱 Ψηφιακό Διαβατήριο</h2><p>ΟΣΠΡΙΑ ΧΑΣΙΩΝ / OSPRIA HASION</p></div>', unsafe_allow_html=True)
 
-# 2. Selection
+# 2. Επιλογή
 selected_prod = st.selectbox("Επιλέξτε Παρτίδα:", list(products.keys()), label_visibility="collapsed")
 p = products[selected_prod]
 
@@ -84,15 +85,27 @@ st.markdown('<div class="section-header">👨‍🌾 Στοιχεία Παραγ
 st.markdown(f'<div class="info-card"><b>Παραγωγός:</b> {p["producer"]}<br><b>📍 {p["origin"]}</b></div>', unsafe_allow_html=True)
 st.markdown(f'<div class="eco-box">🌍 {p["eco"]}</div>', unsafe_allow_html=True)
 
-# 5. ΔΙΑΔΡΟΜΗ ΠΡΟΪΟΝΤΟΣ (Οριζόντια)
+# 5. ΔΙΑΔΡΟΜΗ ΠΡΟΪΟΝΤΟΣ ΜΕ ΗΜΕΡΟΜΗΝΙΕΣ
 st.markdown('<div class="section-header">📅 Διαδρομή Προϊόντος</div>', unsafe_allow_html=True)
 st.markdown(f"""
 <div class="journey-row">
-    <div class="journey-item"><span class="journey-icon">🚜</span><span class="journey-label">ΣΠΟΡΑ</span></div>
+    <div class="journey-item">
+        <span class="journey-icon">🚜</span>
+        <span class="journey-label">ΣΠΟΡΑ</span>
+        <span class="journey-date">{p['plant_date']}</span>
+    </div>
     <div class="journey-arrow">➜</div>
-    <div class="journey-item"><span class="journey-icon">🚁</span><span class="journey-label">UAV ΕΛΕΓΧΟΣ</span></div>
+    <div class="journey-item">
+        <span class="journey-icon">🚁</span>
+        <span class="journey-label">UAV ΕΛΕΓΧΟΣ</span>
+        <span class="journey-date">{p['drone_date']}</span>
+    </div>
     <div class="journey-arrow">➜</div>
-    <div class="journey-item"><span class="journey-icon">🧺</span><span class="journey-label">ΣΥΓΚΟΜΙΔΗ</span></div>
+    <div class="journey-item">
+        <span class="journey-icon">🧺</span>
+        <span class="journey-label">ΣΥΓΚΟΜΙΔΗ</span>
+        <span class="journey-date">{p['harvest_date']}</span>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -101,7 +114,7 @@ st.markdown('<div class="section-header">🚁 Drone Spraying (Real Footage)</div
 st.video(p['video'])
 st.markdown(f'<div class="info-card" style="border-left: 5px solid #2e7d32;">• <b>Επεμβάσεις:</b> {p["drone_flights"]}</div>', unsafe_allow_html=True)
 
-# 7. Live Data (Δίπλα-δίπλα)
+# 7. Live Data
 st.markdown('<div class="section-header">🌡️ Live Κατάσταση (UAV Data)</div>', unsafe_allow_html=True)
 st.markdown(f"""
 <div class="stats-container">
@@ -123,9 +136,10 @@ st.markdown('<div class="section-header">🗺️ Τοποθεσία Αγροτε
 map_data = pd.DataFrame({'lat': [p['lat']], 'lon': [p['lon']]})
 st.map(map_data)
 
-# 10. QR CODE (Fixed Method)
+# 10. QR CODE (New Stable Source)
 st.markdown('<div class="section-header">📲 Scan for Origin</div>', unsafe_allow_html=True)
-qr_code_api = f"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={p['id']}"
+# Σταθερό API παραγωγής QR
+qr_code_api = f"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://hasia-beans.streamlit.app&bgcolor=ffffff"
 col_qr, col_txt = st.columns([1, 2])
 with col_qr:
     st.image(qr_code_api, caption="Batch QR", width=120)
@@ -135,4 +149,4 @@ with col_txt:
 if st.button("⭐ Κλείστε Ξενάγηση στο Κτήμα"):
     st.balloons()
 
-st.markdown("<p style='text-align:center; font-size:10px; color:#999; margin-top:15px;'>ΟΣΠΡΙΑ ΧΑΣΙΩΝ DPP v14.0</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center; font-size:10px; color:#999; margin-top:15px;'>ΟΣΠΡΙΑ ΧΑΣΙΩΝ DPP v14.1</p>", unsafe_allow_html=True)
