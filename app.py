@@ -115,7 +115,7 @@ map_data = pd.DataFrame({'lat': [p['lat']], 'lon': [p['lon']]})
 st.map(map_data)
 
 # 10. Button
-if st.button("⭐ Κλείστε Ξενάγηση στο Κτήμα"):
+if st.button("⭐ Κλείστε Ξενάγηση στο Αγρόκτημα"):
     st.balloons()
     st.success("Σας περιμένουμε στα Χάσια!")
 
