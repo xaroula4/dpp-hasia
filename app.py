@@ -17,14 +17,14 @@ st.markdown("""
     .producer-card { background: linear-gradient(135deg, #f1f8e9 0%, #dcedc8 100%); padding: 15px; border-radius: 15px; border: 1px solid #aed581; margin-top: 10px; }
     .stats-container { display: flex; justify-content: space-around; gap: 5px; margin-top: 10px; }
     .stat-card { background: #f1f8e9; border: 1px solid #e0e0e0; border-radius: 12px; padding: 10px; text-align: center; flex: 1; }
-    .stButton>button { background-color: #2e7d32; color: white; border-radius: 20px; width: 100%; font-weight: bold; height: 45px; border: none; }
+    .stButton>button { background-color: #2e7d32 !important; color: white !important; border-radius: 20px; width: 100%; font-weight: bold; height: 45px; border: none; }
     .about-section { background-color: #e8f5e9; padding: 15px; border-radius: 15px; border-left: 5px solid #2e7d32; margin-top: 10px; font-size: 13px; }
     .recipe-card { background-color: #fffde7; padding: 12px; border-radius: 10px; border: 1px dashed #fbc02d; margin-top: 10px; }
     .bio-text { font-size: 10px; text-align: center; font-weight: bold; color: #333; margin-top: -10px; }
     </style>
     """, unsafe_allow_html=True)
 
-# --- ΔΕΔΟΜΕΝΑ ΠΡΟΪΟΝΤΩΝ & ΠΑΡΑΓΩΓΩΝ ---
+# --- ΔΕΔΟΜΕΝΑ ΠΡΟΪΟΝΤΩΝ ---
 products = {
     "Φακή Χασίων (Παρτίδα #OX-01)": {
         "producer": "Νικόλαος Παπαδόπουλος",
@@ -48,7 +48,7 @@ products = {
     }
 }
 
-# 1. Header
+# 1. Header (Διορθωμένη Επωνυμία)
 st.markdown('<div class="header-style"><h2>🌱 Ψηφιακό Διαβατήριο</h2><p style="margin:0; font-weight: bold;">ΟΣΠΡΙΑ ΧΑΣΙΩΝ / OSPRIA HASION</p></div>', unsafe_allow_html=True)
 
 # 2. Επιλογή Παρτίδας
@@ -58,8 +58,10 @@ p = products[selected_prod]
 # 3. Εικόνες & Σήμα Bio
 col1, col2 = st.columns([3, 1.2])
 with col1:
-    try: st.image(p['img'], use_container_width=True)
-    except: st.error(f"Λείπει η εικόνα: {p['img']}")
+    if os.path.exists(p['img']):
+        st.image(p['img'], use_container_width=True)
+    else:
+        st.info(f"Φορτώνει εικόνα: {p['img']}")
 with col2:
     if p['show_bio'] and os.path.exists(p['bio_img']):
         st.image(p['bio_img'], use_container_width=True)
@@ -67,57 +69,28 @@ with col2:
 
 # 4. Στοιχεία Παραγωγού
 st.markdown('<div class="section-header">👨‍🌾 Στοιχεία Παραγωγού</div>', unsafe_allow_html=True)
-st.markdown(f"""
-<div class="producer-card">
-    <p style="margin:0; font-size:16px;"><b>{p['producer']}</b></p>
-    <p style="margin:0; font-size:14px; color:#555;">📍 {p['origin']}</p>
-</div>
-""", unsafe_allow_html=True)
+st.markdown(f'<div class="producer-card"><p style="margin:0; font-size:16px;"><b>{p["producer"]}</b></p><p style="margin:0; font-size:14px; color:#555;">📍 {p["origin"]}</p></div>', unsafe_allow_html=True)
 
-# 5. Πληροφορίες Παρτίδας & ISO
+# 5. Πληροφορίες & Πιστοποίηση
 st.markdown('<div class="section-header">📋 Πληροφορίες & Πιστοποίηση</div>', unsafe_allow_html=True)
-st.markdown(f"""
-<div class="info-card">
-    <p style="margin:2px;">• <b>Lot ID:</b> {p['id']}</p>
-    <p style="margin:2px;">• <b>Καλλιέργεια:</b> {p['type']}</p>
-    <p style="margin:2px;">• <b>Πρότυπο Ασφάλειας:</b> ISO 22000:2018</p>
-</div>
-""", unsafe_allow_html=True)
+st.markdown(f'<div class="info-card"><p style="margin:2px;">• <b>Lot ID:</b> {p["id"]}</p><p style="margin:2px;">• <b>Καλλιέργεια:</b> {p["type"]}</p><p style="margin:2px;">• <b>Πρότυπο:</b> ISO 22000:2018</p></div>', unsafe_allow_html=True)
 
-# 6. Βίντεο Drone & Στοιχεία Επέμβασης
+# 6. Βίντεο & Drone Data
 st.markdown('<div class="section-header">🚁 Drone Spraying (Real Footage)</div>', unsafe_allow_html=True)
 st.video(p['video'])
-st.markdown(f"""
-<div class="info-card" style="border-left: 5px solid #81c784;">
-    <p style="margin:2px;">• <b>Τελευταίος Ψεκασμός:</b> {p['drone_date']}</p>
-    <p style="margin:2px;">• <b>Σκεύασμα:</b> {p['drone_tool']}</p>
-    <p style="margin:2px;">• <b>Αρ. Πτήσεων:</b> {p['drone_flights']}</p>
-</div>
-""", unsafe_allow_html=True)
+st.markdown(f'<div class="info-card" style="border-left: 5px solid #81c784;"><p style="margin:2px;">• <b>Τελευταίος Ψεκασμός:</b> {p["drone_date"]}</p><p style="margin:2px;">• <b>Επεμβάσεις:</b> {p["drone_flights"]}</p></div>', unsafe_allow_html=True)
 
 # 7. Live Data
-st.markdown('<div class="section-header">🌡️ Live Κατάσταση (UAV Data)</div>', unsafe_allow_header=True)
-st.markdown(f"""
-<div class="stats-container">
-    <div class="stat-card">❤️<br><small>Υγεία</small><br><b style="color:#2e7d32; font-size:16px;">{p['health']}</b></div>
-    <div class="stat-card">🌿<br><small>Στάδιο</small><br><b>{p['phase']}</b></div>
-    <div class="stat-card">☀️<br><small>Καιρός</small><br><b>28°C</b></div>
-</div>
-""", unsafe_allow_html=True)
+st.markdown('<div class="section-header">🌡️ Live Κατάσταση (UAV Data)</div>', unsafe_allow_html=True)
+st.markdown(f'<div class="stats-container"><div class="stat-card">❤️<br><small>Υγεία</small><br><b>{p["health"]}</b></div><div class="stat-card">🌿<br><small>Στάδιο</small><br><b>{p["phase"]}</b></div><div class="stat-card">☀️<br><small>Καιρός</small><br><b>28°C</b></div></div>', unsafe_allow_html=True)
 
 # 8. Συνταγή
 st.markdown('<div class="section-header">👩‍🍳 Πρόταση Μαγειρικής</div>', unsafe_allow_html=True)
 st.markdown(f'<div class="recipe-card">{p["recipe"]}</div>', unsafe_allow_html=True)
 
-# 9. Η Ιστορία μας (Storytelling)
+# 9. Storytelling
 st.markdown('<div class="section-header">🏠 Η Ιστορία μας</div>', unsafe_allow_html=True)
-st.markdown("""
-<div class="about-section">
-    <b>ΟΣΠΡΙΑ ΧΑΣΙΩΝ (Καρπερό Γρεβενών)</b><br>
-    Καλλιεργούμε 250 στρέμματα με σεβασμό στη γη. Η χρήση των <b>drones</b> μας επιτρέπει 
-    να μειώνουμε τις εισροές, προσφέροντας ένα προϊόν απόλυτα ασφαλές και ψηφιακά ιχνηλατήσιμο.
-</div>
-""", unsafe_allow_html=True)
+st.markdown('<div class="about-section"><b>ΟΣΠΡΙΑ ΧΑΣΙΩΝ (Καρπερό Γρεβενών)</b><br>Καλλιεργούμε 250 στρέμματα με σεβασμό στη γη. Η χρήση των <b>drones</b> μας επιτρέπει να μειώνουμε τις εισροές, προσφέροντας ένα προϊόν απόλυτα ασφαλές.</div>', unsafe_allow_html=True)
 
 # 10. Χάρτης
 st.markdown('<div class="section-header">🗺️ Τοποθεσία Αγροτεμαχίου</div>', unsafe_allow_html=True)
@@ -127,6 +100,6 @@ st.map(map_data)
 # 11. Button
 if st.button("⭐ Κλείστε Ξενάγηση στο Κτήμα"):
     st.balloons()
-    st.success("Σας περιμένουμε στα Χάσια!")
+    st.success("Σας περιμένουμε!")
 
-st.markdown("<p style='text-align:center; font-size:11px; color:#999; margin-top:20px;'>ΟΣΠΡΙΑ ΧΑΣΙΩΝ DPP v6.5 | 2026</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center; font-size:11px; color:#999; margin-top:20px;'>ΟΣΠΡΙΑ ΧΑΣΙΩΝ DPP v7.0</p>", unsafe_allow_html=True)
