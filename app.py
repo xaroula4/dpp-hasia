@@ -1,5 +1,5 @@
 import streamlit as st
-import panda as pd
+import pandas as pd
 import numpy as np
 import os
 
@@ -19,14 +19,15 @@ st.markdown("""
     .section-header { background-color: #1b5e20; color: white; padding: 8px 15px; border-radius: 10px; margin-top: 15px; font-weight: bold; font-size: 15px; display: flex; align-items: center; gap: 8px; }
     .info-card { background-color: #ffffff; padding: 12px; border-radius: 10px; border: 1px solid #eee; margin-top: 5px; font-size: 14px; line-height: 1.6; }
     
-    /* Eco Impact Box */
+    /* Eco Box */
     .eco-box { background-color: #e1f5fe; padding: 12px; border-radius: 12px; border: 1px solid #01579b; color: #01579b; font-size: 13px; text-align: center; margin: 10px 0; font-weight: bold; }
 
-    /* ΝΕΟ TIMELINE (Διαδρομή Προϊόντος) */
-    .journey-container { display: flex; flex-direction: column; gap: 10px; padding: 10px 0; }
-    .journey-step { display: flex; align-items: center; gap: 15px; padding: 10px; background: #f1f8e9; border-radius: 10px; border-left: 5px solid #2e7d32; }
-    .step-icon { font-size: 20px; }
-    .step-text { font-size: 13px; font-weight: 500; }
+    /* ΝΕΑ ΟΡΙΖΟΝΤΙΑ ΔΙΑΔΡΟΜΗ ΠΡΟΪΟΝΤΟΣ */
+    .journey-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 5px; background: #f1f8e9; border-radius: 15px; margin-top: 10px; }
+    .journey-item { text-align: center; flex: 1; }
+    .journey-icon { font-size: 22px; display: block; }
+    .journey-label { font-size: 10px; font-weight: bold; color: #1b5e20; margin-top: 5px; }
+    .journey-arrow { color: #2e7d32; font-weight: bold; font-size: 18px; }
 
     /* Stats Container (Δίπλα-δίπλα) */
     .stats-container { display: flex; justify-content: space-between; gap: 8px; margin-top: 10px; }
@@ -83,13 +84,15 @@ st.markdown('<div class="section-header">👨‍🌾 Στοιχεία Παραγ
 st.markdown(f'<div class="info-card"><b>Παραγωγός:</b> {p["producer"]}<br><b>📍 {p["origin"]}</b></div>', unsafe_allow_html=True)
 st.markdown(f'<div class="eco-box">🌍 {p["eco"]}</div>', unsafe_allow_html=True)
 
-# 5. ΔΙΑΔΡΟΜΗ ΠΡΟΪΟΝΤΟΣ (Νέο Σχήμα)
+# 5. ΔΙΑΔΡΟΜΗ ΠΡΟΪΟΝΤΟΣ (Οριζόντια)
 st.markdown('<div class="section-header">📅 Διαδρομή Προϊόντος</div>', unsafe_allow_html=True)
 st.markdown(f"""
-<div class="journey-container">
-    <div class="journey-step"><span class="step-icon">🚜</span><span class="step-text"><b>Σπορά:</b> Απρίλιος 2025</span></div>
-    <div class="journey-step"><span class="step-icon">🚁</span><span class="step-text"><b>UAV Έλεγχος:</b> {p['drone_date']}</span></div>
-    <div class="journey-step"><span class="step-icon">🧺</span><span class="step-text"><b>Συγκομιδή:</b> Σεπτέμβριος 2025 (Προβλεπόμενη)</span></div>
+<div class="journey-row">
+    <div class="journey-item"><span class="journey-icon">🚜</span><span class="journey-label">ΣΠΟΡΑ</span></div>
+    <div class="journey-arrow">➜</div>
+    <div class="journey-item"><span class="journey-icon">🚁</span><span class="journey-label">UAV ΕΛΕΓΧΟΣ</span></div>
+    <div class="journey-arrow">➜</div>
+    <div class="journey-item"><span class="journey-icon">🧺</span><span class="journey-label">ΣΥΓΚΟΜΙΔΗ</span></div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -120,17 +123,16 @@ st.markdown('<div class="section-header">🗺️ Τοποθεσία Αγροτε
 map_data = pd.DataFrame({'lat': [p['lat']], 'lon': [p['lon']]})
 st.map(map_data)
 
-# 10. QR CODE (Fix)
+# 10. QR CODE (Fixed Method)
 st.markdown('<div class="section-header">📲 Scan for Origin</div>', unsafe_allow_html=True)
-# Χρησιμοποιούμε QR κώδικα που δείχνει στο site σου
-qr_url = f"https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=https://hasia-beans.streamlit.app&choe=UTF-8"
+qr_code_api = f"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={p['id']}"
 col_qr, col_txt = st.columns([1, 2])
 with col_qr:
-    st.image(qr_url, caption="Batch QR Code", width=120)
+    st.image(qr_code_api, caption="Batch QR", width=120)
 with col_txt:
-    st.markdown("<p style='font-size:12px; margin-top:10px;'>Σκανάρετε το QR Code για να επαληθεύσετε την αυθεντικότητα της παρτίδας και να δείτε τα πλήρη εργαστηριακά δεδομένα.</p>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size:12px; margin-top:10px;'>Σκανάρετε το QR Code για να επαληθεύσετε την αυθεντικότητα της παρτίδας και την ιχνηλασιμότητα του προϊόντος.</p>", unsafe_allow_html=True)
 
 if st.button("⭐ Κλείστε Ξενάγηση στο Κτήμα"):
     st.balloons()
 
-st.markdown("<p style='text-align:center; font-size:10px; color:#999; margin-top:15px;'>ΟΣΠΡΙΑ ΧΑΣΙΩΝ DPP v13.0</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center; font-size:10px; color:#999; margin-top:15px;'>ΟΣΠΡΙΑ ΧΑΣΙΩΝ DPP v14.0</p>", unsafe_allow_html=True)
