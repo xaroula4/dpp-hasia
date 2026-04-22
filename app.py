@@ -27,6 +27,7 @@ products = {
         "id": "#OX-01-066", "origin": "Καρπερό, Γρεβενά", "type": "Βιολογική",
         "date": "Ιούλιος 2025", "phase": "Ανάπτυξη", "health": "96%", 
         "img": "fakes.JPEG", "bio_img": "Image.jpg",
+        "drone_date": "05 Ιουνίου 2025", "drone_flights": "3 επιτυχείς", "drone_tool": "Βιολογικό Εντομοκτόνο",
         "video": "https://www.youtube.com/watch?v=m0md-5Wzp1E",
         "recipe": "🍲 <b>Σαλάτα Beluga:</b> Βράστε για 20', προσθέστε φρέσκο κρεμμυδάκι, ντοματίνια και βαλσάμικο.",
         "lat": 39.941, "lon": 21.632
@@ -35,6 +36,7 @@ products = {
         "id": "#OX-01-070", "origin": "Καστοριά", "type": "Συμβατική",
         "date": "Σεπτέμβριος 2025", "phase": "Ωρίμανση", "health": "98%", 
         "img": "gigantes.png", "bio_img": "Image.jpg",
+        "drone_date": "12 Ιουλίου 2025", "drone_flights": "6 επιτυχείς", "drone_tool": "Εγκεκριμένο Σκεύασμα",
         "video": "https://www.youtube.com/watch?v=SKGdu1x0sxo",
         "recipe": "🥘 <b>Γίγαντες στο φούρνο:</b> Με φρέσκια ντομάτα, σέλινο και πολύ μεράκι!",
         "lat": 40.512, "lon": 21.261
@@ -68,15 +70,22 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# 4. Βίντεο Drone
+# 4. Ψεκασμός με Drone (Επανήλθε πλήρες)
 st.markdown('<div class="section-header">🚁 Drone Spraying (Real Footage)</div>', unsafe_allow_html=True)
 st.video(p['video'])
+st.markdown(f"""
+<div class="info-card" style="border-left: 5px solid #81c784;">
+    <p style="margin:2px;">• <b>Τελευταίος Ψεκασμός:</b> {p['drone_date']}</p>
+    <p style="margin:2px;">• <b>Σκεύασμα:</b> {p['drone_tool']}</p>
+    <p style="margin:2px;">• <b>Αρ. Πτήσεων:</b> {p['drone_flights']}</p>
+</div>
+""", unsafe_allow_html=True)
 
 # 5. Live Data & Καιρός
-st.markdown('<div class="section-header">🌡️ Live Κατάσταση & Καιρός</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-header">🌡️ Live Κατάσταση (UAV Data)</div>', unsafe_allow_html=True)
 st.markdown(f"""
 <div class="stats-container">
-    <div class="stat-card">❤️<br><small>Υγεία</small><br><b>{p['health']}</b></div>
+    <div class="stat-card">❤️<br><small>Υγεία</small><br><b style="color:#2e7d32; font-size:16px;">{p['health']}</b></div>
     <div class="stat-card">🌿<br><small>Στάδιο</small><br><b>{p['phase']}</b></div>
     <div class="stat-card">☀️<br><small>Καιρός</small><br><b>28°C</b></div>
 </div>
@@ -86,22 +95,23 @@ st.markdown(f"""
 st.markdown('<div class="section-header">👩‍🍳 Πρόταση Μαγειρικής</div>', unsafe_allow_html=True)
 st.markdown(f'<div class="recipe-card">{p["recipe"]}</div>', unsafe_allow_html=True)
 
-# 7. Ποιοι Είμαστε
+# 7. Η Ιστορία μας
 st.markdown('<div class="section-header">🏠 Η Ιστορία μας</div>', unsafe_allow_html=True)
 st.markdown("""
 <div class="about-section">
     <b>Οικογένεια Χασίων (Καρπερό Γρεβενών)</b><br>
     Καλλιεργούμε 250 στρέμματα με σεβασμό στη γη. Η χρήση των <b>drones</b> μας επιτρέπει 
-    να μειώνουμε τα φάρμακα έως και 40%, προσφέροντας ένα προϊόν απόλυτα ασφαλές και ψηφιακά ιχνηλατήσιμο.
+    να μειώνουμε τις εισροές, προσφέροντας ένα προϊόν απόλυτα ασφαλές και ψηφιακά ιχνηλατήσιμο.
 </div>
 """, unsafe_allow_html=True)
 
 # 8. Χάρτης
 st.markdown('<div class="section-header">🗺️ Τοποθεσία Αγροτεμαχίου</div>', unsafe_allow_html=True)
-st.map(pd.DataFrame({'lat': [p['lat']], 'lon': [p['lon']]}))
+map_data = pd.DataFrame({'lat': [p['lat']], 'lon': [p['lon']]})
+st.map(map_data)
 
 if st.button("⭐ Κλείστε Ξενάγηση στο Κτήμα"):
     st.balloons()
     st.success("Σας περιμένουμε στα Χάσια!")
 
-st.markdown("<p style='text-align:center; font-size:11px; color:#999; margin-top:20px;'>Hasia Beans DPP v3.0 | 2026</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center; font-size:11px; color:#999; margin-top:20px;'>Hasia Beans DPP v4.0 | 2026</p>", unsafe_allow_html=True)
