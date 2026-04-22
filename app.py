@@ -6,32 +6,35 @@ import os
 # Ρύθμιση Σελίδας
 st.set_page_config(page_title="OSPRIA HASION DPP", page_icon="🌱", layout="wide")
 
-# CSS ΓΙΑ ΤΟ ΣΩΣΤΟ LAYOUT (ΕΠΑΝΑΦΟΡΑ ΜΕΓΕΘΟΥΣ & ICON ALIGNMENT)
+# CSS ΓΙΑ ΤΟ ΤΕΛΙΚΟ LOOK (v12.0)
 st.markdown("""
     <style>
     .main { background-color: #f8f9f5; }
     .stApp { max-width: 500px; margin: 0 auto; background: white; padding: 10px; border-radius: 20px; box-shadow: 0px 0px 20px rgba(0,0,0,0.1); }
     
-    /* Header */
     .header-style { background-color: #2e7d32; color: white; padding: 20px; border-radius: 20px; text-align: center; margin-bottom: 15px; }
     .header-style h2 { margin: 0; font-size: 22px; }
     .header-style p { margin: 5px 0 0 0; font-size: 14px; font-weight: bold; text-transform: uppercase; }
 
-    /* Ενότητες */
     .section-header { background-color: #1b5e20; color: white; padding: 8px 15px; border-radius: 10px; margin-top: 15px; font-weight: bold; font-size: 15px; }
     .info-card { background-color: #ffffff; padding: 12px; border-radius: 10px; border: 1px solid #eee; margin-top: 5px; font-size: 14px; line-height: 1.6; }
-    .producer-card { background: linear-gradient(135deg, #f1f8e9 0%, #dcedc8 100%); padding: 15px; border-radius: 15px; border: 1px solid #aed581; margin-top: 10px; }
+    
+    /* Eco Box */
+    .eco-box { background-color: #e1f5fe; padding: 12px; border-radius: 12px; border: 1px solid #01579b; color: #01579b; font-size: 13px; text-align: center; margin-top: 10px; }
 
-    /* Stats Container - Δίπλα-δίπλα με σωστό μέγεθος */
+    /* Timeline Style */
+    .timeline { border-left: 3px solid #2e7d32; margin-left: 20px; padding-left: 20px; position: relative; }
+    .timeline-item { margin-bottom: 15px; position: relative; }
+    .timeline-item::before { content: '●'; color: #2e7d32; position: absolute; left: -27px; top: 0; font-size: 20px; background: white; }
+
+    /* Stats Container */
     .stats-container { display: flex; justify-content: space-between; gap: 8px; margin-top: 10px; }
     .stat-card { background: #f1f8e9; border: 1px solid #e0e0e0; border-radius: 12px; padding: 12px 5px; text-align: center; flex: 1; }
     .stat-card span { font-size: 20px; display: block; margin-bottom: 5px; }
     .stat-card small { font-size: 11px; color: #666; font-weight: bold; display: block; }
-    .stat-card b { font-size: 15px; color: #1b5e20; display: block; margin-top: 2px; }
+    .stat-card b { font-size: 15px; color: #1b5e20; display: block; }
 
     .stButton>button { background-color: #2e7d32 !important; color: white !important; border-radius: 20px; width: 100%; font-weight: bold; height: 48px; border: none; }
-    .about-section { background-color: #e8f5e9; padding: 15px; border-radius: 15px; border-left: 5px solid #2e7d32; margin-top: 10px; font-size: 13px; }
-    .recipe-card { background-color: #fffde7; padding: 12px; border-radius: 10px; border: 1px dashed #fbc02d; margin-top: 10px; font-size: 14px; }
     .bio-text { font-size: 10px; text-align: center; font-weight: bold; color: #333; margin-top: -10px; }
     </style>
     """, unsafe_allow_html=True)
@@ -43,9 +46,10 @@ products = {
         "id": "#OX-01-066", "origin": "Καρπερό, Γρεβενά", "type": "Βιολογική",
         "phase": "Ανάπτυξη", "health": "96%", "temp": "28°C",
         "img": "fakes.JPEG", "bio_img": "bio.png", "show_bio": True,
-        "drone_date": "05 Ιουνίου 2025", "drone_flights": "3 επιτυχείς", "drone_tool": "Βιολογικό Εντομοκτόνο",
+        "drone_date": "05 Ιουνίου 2025", "drone_flights": "3 επιτυχείς",
+        "eco": "💧 Εξοικονομήθηκαν 1.200L νερού μέσω UAV.",
         "video": "https://www.youtube.com/watch?v=m0md-5Wzp1E",
-        "recipe": "🍲 <b>Σαλάτα Beluga:</b> Βράστε για 20', προσθέστε φρέσκο κρεμμυδάκι, ντοματίνια και βαλσάμικο.",
+        "recipe": "🍲 <b>Σαλάτα Beluga:</b> Βράστε για 20', προσθέστε φρέσκο κρεμμυδάκι & βαλσάμικο.",
         "lat": 39.941, "lon": 21.632
     },
     "Φασόλια Γίγαντες (Παρτίδα #KT-05)": {
@@ -53,7 +57,8 @@ products = {
         "id": "#KT-05-070", "origin": "Καστοριά", "type": "Συμβατική",
         "phase": "Ωρίμανση", "health": "98%", "temp": "27°C",
         "img": "gigantes.png", "bio_img": "bio.png", "show_bio": False,
-        "drone_date": "12 Ιουλίου 2025", "drone_flights": "6 επιτυχείς", "drone_tool": "Εγκεκριμένο Σκεύασμα",
+        "drone_date": "12 Ιουλίου 2025", "drone_flights": "6 επιτυχείς",
+        "eco": "🚜 Μείωση CO2 κατά 35% λόγω ακριβείας.",
         "video": "https://www.youtube.com/watch?v=SKGdu1x0sxo",
         "recipe": "🥘 <b>Γίγαντες στο φούρνο:</b> Με φρέσκια ντομάτα, σέλινο και πολύ μεράκι!",
         "lat": 40.512, "lon": 21.261
@@ -63,34 +68,42 @@ products = {
 # 1. Header
 st.markdown('<div class="header-style"><h2>🌱 Ψηφιακό Διαβατήριο</h2><p>ΟΣΠΡΙΑ ΧΑΣΙΩΝ / OSPRIA HASION</p></div>', unsafe_allow_html=True)
 
-# 2. Επιλογή Παρτίδας
-selected_prod = st.selectbox("Επιλέξτε Σκαναρισμένη Παρτίδα (QR):", list(products.keys()), label_visibility="collapsed")
+# 2. Επιλογή
+selected_prod = st.selectbox("Επιλέξτε Παρτίδα:", list(products.keys()), label_visibility="collapsed")
 p = products[selected_prod]
 
-# 3. Εικόνες & Σήμα Bio
+# 3. Εικόνες & Bio
 col1, col2 = st.columns([3, 1.2])
 with col1:
-    if os.path.exists(p['img']):
-        st.image(p['img'], use_container_width=True)
+    if os.path.exists(p['img']): st.image(p['img'], use_container_width=True)
 with col2:
     if p['show_bio'] and os.path.exists(p['bio_img']):
         st.image(p['bio_img'], use_container_width=True)
         st.markdown('<p class="bio-text">HELLAS Agriculture<br>GR-BIO-007</p>', unsafe_allow_html=True)
 
-# 4. Στοιχεία Παραγωγού
+# 4. Στοιχεία Παραγωγού & Eco Box
 st.markdown('<div class="section-header">👨‍🌾 Στοιχεία Παραγωγού</div>', unsafe_allow_html=True)
-st.markdown(f'<div class="producer-card"><p style="margin:0; font-size:16px;"><b>{p["producer"]}</b></p><p style="margin:0; font-size:14px; color:#555;">📍 {p["origin"]}</p></div>', unsafe_allow_html=True)
+st.markdown(f'<div class="info-card"><b>Παραγωγός:</b> {p["producer"]}<br><b>📍 {p["origin"]}</b></div>', unsafe_allow_html=True)
+st.markdown(f'<div class="eco-box">🌍 <b>Smart Farming Impact:</b> {p["eco"]}</div>', unsafe_allow_html=True)
 
-# 5. Πληροφορίες & Πιστοποίηση
-st.markdown('<div class="section-header">📋 Πληροφορίες & Πιστοποίηση</div>', unsafe_allow_html=True)
-st.markdown(f'<div class="info-card"><p style="margin:2px;">• <b>Lot ID:</b> {p["id"]}</p><p style="margin:2px;">• <b>Καλλιέργεια:</b> {p["type"]}</p><p style="margin:2px;">• <b>Πρότυπο:</b> ISO 22000:2018</p></div>', unsafe_allow_html=True)
+# 5. Timeline (Η Διαδρομή του Προϊόντος)
+st.markdown('<div class="section-header">📅 Διαδρομή Προϊόντος</div>', unsafe_allow_html=True)
+st.markdown(f"""
+<div class="info-card">
+    <div class="timeline">
+        <div class="timeline-item"><b>Σπορά:</b> Απρίλιος 2025</div>
+        <div class="timeline-item"><b>UAV Έλεγχος:</b> {p['drone_date']}</div>
+        <div class="timeline-item"><b>Συγκομιδή:</b> Σεπτέμβριος 2025 (Προβλεπόμενη)</div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
-# 6. Βίντεο & Drone Data (Εδώ οι πτήσεις)
+# 6. Drone Video & Data
 st.markdown('<div class="section-header">🚁 Drone Spraying (Real Footage)</div>', unsafe_allow_html=True)
 st.video(p['video'])
-st.markdown(f'<div class="info-card" style="border-left: 5px solid #81c784;"><p style="margin:2px;">• <b>Τελευταίος Ψεκασμός:</b> {p["drone_date"]}</p><p style="margin:2px;">• <b>Επεμβάσεις:</b> {p["drone_flights"]}</p></div>', unsafe_allow_html=True)
+st.markdown(f'<div class="info-card" style="border-left: 5px solid #2e7d32;">• <b>Επεμβάσεις:</b> {p["drone_flights"]}</div>', unsafe_allow_html=True)
 
-# 7. Live Data (Δίπλα-δίπλα: Υγεία, Στάδιο, Θερμοκρασία)
+# 7. Live Data
 st.markdown('<div class="section-header">🌡️ Live Κατάσταση (UAV Data)</div>', unsafe_allow_html=True)
 st.markdown(f"""
 <div class="stats-container">
@@ -100,22 +113,26 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# 8. Συνταγή
+# 8. Συνταγή & Ιστορία
 st.markdown('<div class="section-header">👩‍🍳 Πρόταση Μαγειρικής</div>', unsafe_allow_html=True)
-st.markdown(f'<div class="recipe-card">{p["recipe"]}</div>', unsafe_allow_html=True)
+st.markdown(f'<div class="info-card">{p["recipe"]}</div>', unsafe_allow_html=True)
 
-# 9. Storytelling
 st.markdown('<div class="section-header">🏠 Η Ιστορία μας</div>', unsafe_allow_html=True)
-st.markdown('<div class="about-section"><b>ΟΣΠΡΙΑ ΧΑΣΙΩΝ (Καρπερό Γρεβενών)</b><br>Καλλιεργούμε 250 στρέμματα με σεβασμό στη γη. Η χρήση των <b>drones</b> μας επιτρέπει να μειώνουμε τις εισροές, προσφέροντας ένα προϊόν απόλυτα ασφαλές.</div>', unsafe_allow_html=True)
+st.markdown('<div class="info-card"><b>ΟΣΠΡΙΑ ΧΑΣΙΩΝ</b>: Καλλιέργεια 250 στρ. με σεβασμό στη γη και χρήση τεχνολογίας Drone.</div>', unsafe_allow_html=True)
 
-# 10. Χάρτης
+# 9. Χάρτης
 st.markdown('<div class="section-header">🗺️ Τοποθεσία Αγροτεμαχίου</div>', unsafe_allow_html=True)
-map_data = pd.DataFrame({'lat': [p['lat']], 'lon': [p['lon']]})
-st.map(map_data)
+st.map(pd.DataFrame({'lat': [p['lat']], 'lon': [p['lon']]}), zoom=12)
 
-# 11. Button
-if st.button("⭐ Κλείστε Ξενάγηση στο Αγρόκτημα"):
+# 10. QR Code Mockup Section
+st.markdown('<div class="section-header">📲 Scan for Origin</div>', unsafe_allow_html=True)
+col_qr, col_txt = st.columns([1, 2])
+with col_qr:
+    st.image(f"https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={p['id']}", caption="Batch QR")
+with col_txt:
+    st.markdown("<p style='font-size:12px; margin-top:10px;'>Αυτό το QR Code αντιστοιχεί στη συγκεκριμένη παρτίδα και πιστοποιεί την αυθεντικότητα της προέλευσης.</p>", unsafe_allow_html=True)
+
+if st.button("⭐ Κλείστε Ξενάγηση στο Κτήμα"):
     st.balloons()
-    st.success("Σας περιμένουμε!")
 
-st.markdown("<p style='text-align:center; font-size:11px; color:#999; margin-top:20px;'>ΟΣΠΡΙΑ ΧΑΣΙΩΝ DPP v11.0</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center; font-size:10px; color:#999; margin-top:15px;'>ΟΣΠΡΙΑ ΧΑΣΙΩΝ DPP v12.0</p>", unsafe_allow_html=True)
